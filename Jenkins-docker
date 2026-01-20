@@ -43,8 +43,8 @@ pipeline {
 
     stage('Running Container') {
       steps {
-        sh 'docker -H tcp://192.168.56.103:2375 rm -f webserver || true'
-        sh 'docker -H tcp://192.168.56.103:2375 run -d --name webserver -p 80:8080 jiwonseok97/tomcat:latest'
+        sh 'docker -H tcp://192.168.56.104:2375 rm -f webserver || true'
+        sh 'docker -H tcp://192.168.56.104:2375 run -d --name webserver -p 80:8080 jiwonseok97/tomcat:latest'
       }
     }
   }
