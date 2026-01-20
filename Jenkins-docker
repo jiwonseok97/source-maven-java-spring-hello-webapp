@@ -2,9 +2,13 @@ pipeline {
   agent any
 
   environment {
-    DOCKERHUB_USER = 'ws5670'
-    IMAGE_NAME     = 'tomcat'
-    REMOTE_DOCKER  = 'tcp://192.168.56.104:2375'
+    DOCKERHUB_USER    = 'ws5670'
+    IMAGE_NAME        = 'tomcat'
+    REMOTE_DOCKER     = 'tcp://192.168.56.104:2375'
+
+    // 원격 도커(2375)는 HTTP 이므로 TLS 강제 OFF
+    DOCKER_TLS_VERIFY = '0'
+    DOCKER_CERT_PATH  = ''
   }
 
   stages {
@@ -51,8 +55,9 @@ pipeline {
 
     stage('Running Container') {
       steps {
-        sh 'docker -H ${REMOTE_DOCKER} rm -f webserver || true'
-        sh 'docker -H ${REMOTE_DOCKER} run -d --name webserver -p 80:8080 ${DOCKERHUB_USER}/${IMAGE_NAME}:latest'
+        sh 'env | grep DOCKER || true'
+        sh 'DOCKER_TLS_VERIFY=0 DOCKER_CERT_PATH= docker -H ${REMOTE_DOCKER} rm -f webserver || true'
+        sh 'DOCKER_TLS_VERIFY=0 DOCKER_CERT_PATH= docker -H ${REMOTE_DOCKER} run -d --name webserver -p 80:8080 ${DOCKERHUB_USER}/${IMAGE_NAME}:latest'
       }
     }
   }
