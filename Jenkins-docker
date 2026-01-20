@@ -27,7 +27,7 @@ pipeline {
 
     stage('Image Tag') {
       steps {
-        sh 'docker tag tomcat:hello jiwonseok97/tomcat:$BUILD_NUMBER'
+//        sh 'docker tag tomcat:hello jiwonseok97/tomcat:$BUILD_NUMBER'
         sh 'docker tag tomcat:hello jiwonseok97/tomcat:latest'
       }
     }
@@ -35,7 +35,7 @@ pipeline {
     stage('Image Push') {
       steps {
         withDockerRegistry(credentialsId: 'docker-hub-token', url: 'https://index.docker.io/v1/') {
-          sh 'docker push jiwonseok97/tomcat:$BUILD_NUMBER'
+ //         sh 'docker push jiwonseok97/tomcat:$BUILD_NUMBER'
           sh 'docker push jiwonseok97/tomcat:latest'
         }
       }
